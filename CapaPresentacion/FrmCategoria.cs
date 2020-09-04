@@ -113,11 +113,11 @@ namespace CapaPresentacion
             if (tablaCategoria.SelectedRows.Count > 0)
             {
                 objEntidad.IdCategoria = Convert.ToInt32(tablaCategoria.CurrentRow.Cells[0].Value.ToString());
-                DialogResult eliminar = MessageBox.Show("Esta seguro que desea Eliminar la Categoria", "Eliminar", MessageBoxButtons.YesNo);
+                DialogResult eliminar = MessageBox.Show("Esta seguro que desea eliminar la Categoria", "Eliminar", MessageBoxButtons.YesNo);
                 if(eliminar == DialogResult.Yes)
                 {
                     objNegocio.EliminarCategoria(objEntidad);
-                    mostrarBuscarTabla("");
+                    mostrarBuscarTabla(""); 
                 }
             }
             else

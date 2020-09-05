@@ -12,25 +12,25 @@ namespace CapaDatos
 
         public List<E_Categoria>ListarCategorias(string buscar)
         {
-            SqlDataReader LeerFilar;
+            SqlDataReader LeerFilas;
             SqlCommand cmd = new SqlCommand("SP_BUSCARCATEGORIA",conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             conexion.Open();
             cmd.Parameters.AddWithValue("@BUSCAR",buscar);
-            LeerFilar = cmd.ExecuteReader();
+            LeerFilas = cmd.ExecuteReader();
             List<E_Categoria> Listar = new List<E_Categoria>();
-            while (LeerFilar.Read())
+            while (LeerFilas.Read())
             {
                 Listar.Add(new E_Categoria
                 {
-                    IdCategoria = LeerFilar.GetInt32(0),
-                    CodigoCategoria = LeerFilar.GetString(1),
-                    NombreCategoria = LeerFilar.GetString(2),
-                    DescripcionCategoria = LeerFilar.GetString(3),
+                    IdCategoria = LeerFilas.GetInt32(0),
+                    CodigoCategoria = LeerFilas.GetString(1),
+                    NombreCategoria = LeerFilas.GetString(2),
+                    DescripcionCategoria = LeerFilas.GetString(3),
                 });
             }
             conexion.Close();
-            LeerFilar.Close();
+            LeerFilas.Close();
             return Listar;
         }
 
@@ -67,4 +67,5 @@ namespace CapaDatos
             conexion.Close();
         }
     }
+
 }

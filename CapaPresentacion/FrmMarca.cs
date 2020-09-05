@@ -5,36 +5,34 @@ using System.Windows.Forms;
 
 namespace CapaPresentacion
 {
-    public partial class FrmCategoria : Form
+    public partial class FrmMarca : Form
     {
-        private string IdCategoria;
+        private string IdMarca;
         private bool Editarse = false;
-        E_Categoria objEntidad = new E_Categoria();
-        N_Categoria objNegocio = new N_Categoria();
+        E_Marca objEntidad = new E_Marca();
+        N_Marca objNegocio = new N_Marca();
         BindingSource navTabla = new BindingSource();
 
-        public FrmCategoria()
+        public FrmMarca()
         {
             InitializeComponent();
         }
 
-        private void FrmCategoria_Load(object sender, EventArgs e)
+        private void FrmMarca_Load(object sender, EventArgs e)
         {
             mostrarBuscarTabla("");
             accionesTabla();
         }
-
         private void cerrarFormulario_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-
         private void btnFirst_Click(object sender, EventArgs e)
         {
             navTabla.MoveFirst();
         }
-        
+
         private void btnLast_Click(object sender, EventArgs e)
         {
             navTabla.MoveLast();
@@ -57,33 +55,33 @@ namespace CapaPresentacion
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
-            LimpiarCajas();
+            LimpiarCaja();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            LlenarCajas();
+            LlenarCaja();
         }
 
-        private void tablaCategoria_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void tablaMarca_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            LlenarCajas();
+            LlenarCaja();
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if(Editarse == false)
+            if (Editarse == false)
             {
                 try
                 {
-                    objEntidad.NombreCategoria = txtNombre.Text.ToUpper();
-                    objEntidad.DescripcionCategoria = txtDescripcion.Text.ToUpper();
-                    objNegocio.InsertarCategoria(objEntidad);
+                    objEntidad.NombreMarca = txtNombre.Text.ToUpper();
+                    objEntidad.DescripcionMarca = txtDescripcion.Text.ToUpper();
+                    objNegocio.InsertarMarca(objEntidad);
                     MessageBox.Show("Se Guardo el Registro");
                     mostrarBuscarTabla("");
-                    LimpiarCajas();
+                    LimpiarCaja();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("No Se Pudo Guardar el Mensaje" + ex.Message);
                 }
@@ -92,32 +90,32 @@ namespace CapaPresentacion
             {
                 try
                 {
-                    objEntidad.IdCategoria = Convert.ToInt32(IdCategoria);
-                    objEntidad.NombreCategoria = txtNombre.Text.ToUpper();
-                    objEntidad.DescripcionCategoria = txtDescripcion.Text.ToUpper();
-                    objNegocio.EditarCategoria(objEntidad);
-                    MessageBox.Show("Se Guardo el Registro");
+                    objEntidad.IdMarca = Convert.ToInt32(IdMarca);
+                    objEntidad.NombreMarca = txtNombre.Text.ToUpper();
+                    objEntidad.DescripcionMarca = txtDescripcion.Text.ToUpper();
+                    objNegocio.EditarMarca(objEntidad);
+                    MessageBox.Show("Se Actualizo el Registro");
                     mostrarBuscarTabla("");
-                    LimpiarCajas();
+                    LimpiarCaja();
                     Editarse = false;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("No Se Pudo Editar el Mensaje" + ex.Message);
+                    MessageBox.Show("No Se Pudo Guardar el Mensaje" + ex.Message);
                 }
             }
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (tablaCategoria.SelectedRows.Count > 0)
+            if(tablaMarca.SelectedRows.Count > 0)
             {
-                objEntidad.IdCategoria = Convert.ToInt32(tablaCategoria.CurrentRow.Cells[0].Value.ToString());
-                DialogResult eliminar = MessageBox.Show("Esta seguro que desea eliminar la Categoria", "Eliminar", MessageBoxButtons.YesNo);
-                if(eliminar == DialogResult.Yes)
+                objEntidad.IdMarca = Convert.ToInt32(tablaMarca.CurrentRow.Cells[0].Value.ToString());
+                DialogResult eliminar = MessageBox.Show("Esta seguro que desea eliminar la Marca", "Eliminar", MessageBoxButtons.YesNo);
+                if (eliminar == DialogResult.Yes)
                 {
-                    objNegocio.EliminarCategoria(objEntidad);
-                    mostrarBuscarTabla(""); 
+                    objNegocio.EliminarMarca(objEntidad);
+                    mostrarBuscarTabla("");
                 }
             }
             else
@@ -127,20 +125,20 @@ namespace CapaPresentacion
         }
 
         public void mostrarBuscarTabla(string buscar)
-        { 
-            navTabla.DataSource = objNegocio.ListarCategorias(buscar);
-            tablaCategoria.DataSource = navTabla;
+        {
+            navTabla.DataSource = objNegocio.ListarMarcas(buscar);
+            tablaMarca.DataSource = navTabla;
         }
 
         public void accionesTabla()
         {
-            tablaCategoria.Columns[0].Visible = false;
-            tablaCategoria.Columns[1].Width = 65;
-            tablaCategoria.Columns[2].Width = 170;
-            tablaCategoria.ClearSelection();
+            tablaMarca.Columns[0].Visible = false;
+            tablaMarca.Columns[1].Width = 65;
+            tablaMarca.Columns[2].Width = 170;
+            tablaMarca.ClearSelection();
         }
 
-        public void LimpiarCajas()
+        public void LimpiarCaja()
         {
             txtCodigo.Text = "";
             txtNombre.Text = "";
@@ -149,21 +147,20 @@ namespace CapaPresentacion
             Editarse = false;
         }
 
-        public void LlenarCajas()
+        public void LlenarCaja()
         {
-            if (tablaCategoria.SelectedRows.Count > 0)
+            if(tablaMarca.SelectedRows.Count > 0)
             {
-                IdCategoria = tablaCategoria.CurrentRow.Cells[0].Value.ToString();
-                txtCodigo.Text = tablaCategoria.CurrentRow.Cells[1].Value.ToString();
-                txtNombre.Text = tablaCategoria.CurrentRow.Cells[2].Value.ToString();
-                txtDescripcion.Text = tablaCategoria.CurrentRow.Cells[3].Value.ToString();
+                IdMarca = tablaMarca.CurrentRow.Cells[0].Value.ToString();
+                txtCodigo.Text = tablaMarca.CurrentRow.Cells[1].Value.ToString();
+                txtNombre.Text = tablaMarca.CurrentRow.Cells[2].Value.ToString();
+                txtDescripcion.Text = tablaMarca.CurrentRow.Cells[3].Value.ToString();
                 Editarse = true;
             }
             else
             {
-                MessageBox.Show("Seleccione la fila que desea editar ");
+                MessageBox.Show("Seleccione la fila que desea editar");
             }
         }
-
     }
 }
